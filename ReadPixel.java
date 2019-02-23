@@ -150,6 +150,8 @@ public class ReadPixel extends Component {
 			} 
 		}
 
+
+		System.out.println("Just an ol testerino");
 		printArrays(quadrantArray);
 
 		// In our third pass, we go through each pixel and check to see if the current
@@ -157,23 +159,51 @@ public class ReadPixel extends Component {
 		// This is determined by checking its' neighbors and seeing if they already 
 		// have a defined border assigned. 
 
-			for (int i = 0; i < quadrantArray.length; i++) {
-				for (int j = 0; j < quadrantArray[0].length; j++) {
+			for (int row = 0; row < 10; row++) {
+				for (int col = 0; col < 10; col++) {
 					try {
-		
-	
-						if(quadrantArray[i-1][j] == quadrantArray[i][j] /* N */ && quadrantArray[i][j+1] == quadrantArray[i][j] /* E */) {
-							quadrantArray[i][j] = 0;
-	
-						}   else if(quadrantArray[i-1][j] == quadrantArray[i][j] /* N */ && quadrantArray[i][j-1] == quadrantArray[i][j] /*W */) {
-							quadrantArray[i][j] = 0;
-	
-						}  else if(quadrantArray[i][j+1] == quadrantArray[i][j] /* E */ && quadrantArray[i+1][j] == quadrantArray[i][j] /* S */) {
-							quadrantArray[i][j] = 0;
-	
-						} else if(quadrantArray[i+1][j] == quadrantArray[i][j] /* S */ && quadrantArray[i][j-1] == quadrantArray[i][j] /* W */) {
-							quadrantArray[i][j] = 0;
+						
+						if(isValid2(quadrantArray, row, col + 1) && isValid2(quadrantArray, row + 1, col)) {
+
+							if(quadrantArray[row][col+1] == 1 /* E */ && quadrantArray[row+1][col] == 1 /* S */) {
+								System.out.println(1);
+								System.out.println("Removing pixel at: " + row + ", " + col);
+								
+								quadrantArray[row][col] = 0;
+							}
 						}
+
+		
+
+						if(isValid2(quadrantArray, row, col - 1) && isValid2(quadrantArray, row + 1, col)) {
+							if(quadrantArray[row][col - 1] == 1  /* W */ && quadrantArray[row + 1][col] == 1 /* S */) {
+								System.out.println(2);
+								System.out.println("Removing pixel at: " + row + ", " + col);
+
+								quadrantArray[row][col] = 0;
+						}
+					}
+
+
+
+						if(isValid2(quadrantArray, row - 1, col) && isValid2(quadrantArray, row, col - 1)) {
+							if(quadrantArray[row - 1][col] == 1 /* N */ && quadrantArray[row][col - 1] == 1 /*W */) {
+								System.out.println(3);
+								System.out.println("Removing pixel at: " + row + ", " + col);
+
+							quadrantArray[row][col] = 0;
+						}
+					}
+
+						if(isValid2(quadrantArray, row - 1, col) && isValid2(quadrantArray, row, col + 1)) {
+							if(quadrantArray[row-1][col] == 1 /* N */ && quadrantArray[row][col+1] == 1 /* E */) {
+							System.out.println(4);
+							System.out.println("Removing pixel at: " + row + ", " + col);
+
+							quadrantArray[row][col] = 0;
+						}
+					}
+						
 					
 				} catch(Exception IndexOutOfBoundsException) {
 					System.out.println("We're out of bounds.");
@@ -181,6 +211,9 @@ public class ReadPixel extends Component {
 				}
 				}		
 			}
+
+			System.out.println("Just an ol testerino 2");
+			printArrays(quadrantArray);
 
 			return quadrantArray;
 	}
@@ -282,8 +315,7 @@ public class ReadPixel extends Component {
 				startRow += 1;
 				startCol += 1;
 			} else {
-				System.out.println("Error: Unable to determine next pixel hop location. Stopping image detection");
-				print(quadrantArray, "NOT SURE");
+				System.out.println("Error: Unable to determine next pixel hop location. Stopping image detection and returning chain code.");
 				break;
 			}
 
