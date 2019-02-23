@@ -4,18 +4,20 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.util.Arrays;
+import java.util.*;
 
 public class ReadPixel extends Component {
 
 	public String[][] stringArray;
 	public int[][] binaryArray;
+	public ArrayList<String> chainList = new ArrayList<String>();
 	int imageWidth;
 	int imageHeight;
 
 	public static void main(String[] foo) {
 
-		System.out.println(" ---------------------------------- ");
-		System.out.println(" 	 STARTING IMAGE DETECTION       ");
+		System.out.println(" \n ---------------------------------- ");
+		System.out.println(" 	   STARTING IMAGE DETECTION     ");
 		System.out.println(" ---------------------------------- ");
 
 		new ReadPixel();
@@ -78,24 +80,63 @@ public class ReadPixel extends Component {
 		int[][] Q8 = qArray.getQuadrant(8);
 		int[][] Q9 = qArray.getQuadrant(9);
 
-		print(Q1, "Q1");
+
+		System.out.println("-----------------------------------");
+		System.out.println(" Calculating Quadrant 1 Chaincode: ");
+		System.out.println("-----------------------------------");
 		indexOfFirstOne(Q1);
-		print(Q2, "Q2");
+
+		System.out.println("-----------------------------------");
+		System.out.println(" Calculating Quadrant 2 Chaincode: ");
+		System.out.println("-----------------------------------");
 		indexOfFirstOne(Q2);
-		print(Q3, "Q3");
+
+		System.out.println("-----------------------------------");
+		System.out.println(" Calculating Quadrant 3 Chaincode: ");
+		System.out.println("-----------------------------------");
 		indexOfFirstOne(Q3);
-		print(Q4, "Q4");
+
+		System.out.println("-----------------------------------");
+		System.out.println(" Calculating Quadrant 4 Chaincode: ");
+		System.out.println("-----------------------------------");
 		indexOfFirstOne(Q4);
-		print(Q5, "Q5");
+
+		System.out.println("-----------------------------------");
+		System.out.println(" Calculating Quadrant 5 Chaincode: ");
+		System.out.println("-----------------------------------");
 		indexOfFirstOne(Q5);
-		print(Q6, "Q6");
+
+		System.out.println("-----------------------------------");
+		System.out.println(" Calculating Quadrant 6 Chaincode: ");
+		System.out.println("-----------------------------------");
 		indexOfFirstOne(Q6);
-		print(Q7, "Q7");
+
+		System.out.println("-----------------------------------");
+		System.out.println(" Calculating Quadrant 7 Chaincode: ");
+		System.out.println("-----------------------------------");
 		indexOfFirstOne(Q7);
-		print(Q8, "Q8");
+
+		System.out.println("-----------------------------------");
+		System.out.println(" Calculating Quadrant 8 Chaincode: ");
+		System.out.println("-----------------------------------");
 		indexOfFirstOne(Q8);
-		print(Q9, "Q9");
+
+		System.out.println("-----------------------------------");
+		System.out.println(" Calculating Quadrant 9 Chaincode: ");
+		System.out.println("-----------------------------------");
 		indexOfFirstOne(Q9);
+
+		System.out.println("-----------------------------------------------");
+		System.out.println(" CALCULATIONS COMPLETED: SEE OUTPUT FOR DETAILS");
+		System.out.println("-----------------------------------------------");
+
+		Iterator itr = chainList.iterator();  
+		int quadrant = 1;
+
+  		while(itr.hasNext()){  
+			   System.out.println("Quadrant " + quadrant + " Chain Code: " + itr.next());  
+			   quadrant++;
+  		}  
 
 	}
 
@@ -150,9 +191,7 @@ public class ReadPixel extends Component {
 			} 
 		}
 
-
-		System.out.println("Just an ol testerino");
-		printArrays(quadrantArray);
+//printArrays(quadrantArray);
 
 		// In our third pass, we go through each pixel and check to see if the current
 		// pixel is an 'dead' pixel. (AKA, a pixel that shares an unnecessary border)
@@ -166,56 +205,37 @@ public class ReadPixel extends Component {
 						if(isValid2(quadrantArray, row, col + 1) && isValid2(quadrantArray, row + 1, col)) {
 
 							if(quadrantArray[row][col+1] == 1 /* E */ && quadrantArray[row+1][col] == 1 /* S */) {
-								System.out.println(1);
-								System.out.println("Removing pixel at: " + row + ", " + col);
-								
 								quadrantArray[row][col] = 0;
 							}
 						}
 
-		
-
 						if(isValid2(quadrantArray, row, col - 1) && isValid2(quadrantArray, row + 1, col)) {
 							if(quadrantArray[row][col - 1] == 1  /* W */ && quadrantArray[row + 1][col] == 1 /* S */) {
-								System.out.println(2);
-								System.out.println("Removing pixel at: " + row + ", " + col);
-
 								quadrantArray[row][col] = 0;
+							}	
 						}
-					}
-
-
 
 						if(isValid2(quadrantArray, row - 1, col) && isValid2(quadrantArray, row, col - 1)) {
 							if(quadrantArray[row - 1][col] == 1 /* N */ && quadrantArray[row][col - 1] == 1 /*W */) {
-								System.out.println(3);
-								System.out.println("Removing pixel at: " + row + ", " + col);
-
 							quadrantArray[row][col] = 0;
+							}
 						}
-					}
 
 						if(isValid2(quadrantArray, row - 1, col) && isValid2(quadrantArray, row, col + 1)) {
 							if(quadrantArray[row-1][col] == 1 /* N */ && quadrantArray[row][col+1] == 1 /* E */) {
-							System.out.println(4);
-							System.out.println("Removing pixel at: " + row + ", " + col);
-
 							quadrantArray[row][col] = 0;
+							}
 						}
-					}
-						
-					
+		
 				} catch(Exception IndexOutOfBoundsException) {
-					System.out.println("We're out of bounds.");
 					continue;
 				}
-				}		
-			}
+			}		
+		}
 
-			System.out.println("Just an ol testerino 2");
-			printArrays(quadrantArray);
+		//printArrays(quadrantArray);
 
-			return quadrantArray;
+		return quadrantArray;
 	}
 
 	public int indexOfFirstOne(int[][] quadrantArray) {
@@ -241,6 +261,7 @@ public class ReadPixel extends Component {
 			System.out.println("No pixels were found in this quadrant!");
 			
 		return -1;
+		
 	}
 
 
@@ -271,55 +292,55 @@ public class ReadPixel extends Component {
 		while (true) {
 
 			if (isValid2(quadrantArray, startRow, startCol + 1) && quadrantArray[startRow][startCol + 1] == 1) { 			// direction 0 - EAST)
-				System.out.println("Moving East. Adding [0] to Chaincode.");
+				//System.out.println("Moving East. Adding [0] to Chaincode.");
 				quadrantArray[startRow][startCol + 1] = 2;
 				chaincode += 0;
 				startCol += 1; 
 			} else if (isValid2(quadrantArray, startRow - 1, startCol + 1) && quadrantArray[startRow - 1][startCol + 1] == 1) {  // direction 1 - NORTH EAST
-				System.out.println("Moving North East. Adding [1] to Chaincode.");
+				//System.out.println("Moving North East. Adding [1] to Chaincode.");
 				quadrantArray[startRow - 1][startCol + 1] = 2;
 				chaincode += 1;
 				startRow -= 1;
 				startCol += 1;
 			} else if (isValid2(quadrantArray, startRow - 1, startCol) && quadrantArray[startRow - 1][startCol] == 1) { 	   // direction 2 - NORTH
-				System.out.println("Moving North. Adding [2] to Chaincode.");
+				//System.out.println("Moving North. Adding [2] to Chaincode.");
 				quadrantArray[startRow - 1][startCol] = 2;
 				chaincode += 2;
 				startRow -= 1;
 			} else if (isValid2(quadrantArray, startRow - 1, startCol - 1) && quadrantArray[startRow - 1][startCol - 1] == 1) { // direction 3 - NORTH WEST
-				System.out.println("Moving North West. Adding [3] to Chaincode.");
+				//System.out.println("Moving North West. Adding [3] to Chaincode.");
 				quadrantArray[startRow - 1][startCol - 1] = 2;
 				chaincode += 3;
 				startRow -= 1;
 				startCol -= 1;
 			} else if (isValid2(quadrantArray, startRow, startCol - 1) && quadrantArray[startRow][startCol - 1] == 1) { 	   // direction 4 - WEST
-				System.out.println("Moving West. Adding [4] to Chaincode.");
+				//System.out.println("Moving West. Adding [4] to Chaincode.");
 				quadrantArray[startRow][startCol - 1] = 2;
 				chaincode += 4;
 				startCol -= 1;
 			} else if (isValid2(quadrantArray, startRow + 1, startCol - 1) && quadrantArray[startRow + 1][startCol - 1] == 1) { // direction 5 - SOUTH WEST
-				System.out.println("Moving South West. Adding [5] to Chaincode.");
+				//System.out.println("Moving South West. Adding [5] to Chaincode.");
 				quadrantArray[startRow + 1][startCol - 1] = 2;
 				chaincode += 5;
 				startRow += 1;
 				startCol -= 1;
 			} else if (isValid2(quadrantArray, startRow + 1, startCol) && quadrantArray[startRow + 1][startCol] == 1) { 	   // direction 6 - SOUTH
-				System.out.println("Moving South. Adding [6] to Chaincode.");
+				//System.out.println("Moving South. Adding [6] to Chaincode.");
 				quadrantArray[startRow + 1][startCol] = 2;
 				chaincode += 6;
 				startRow += 1;
 			} else if (isValid2(quadrantArray, startRow + 1, startCol + 1) && quadrantArray[startRow + 1][startCol + 1] == 1) { // direction 7 - SOUTH EAST
-				System.out.println("Moving South East. Adding [7] to Chaincode.");
+				//System.out.println("Moving South East. Adding [7] to Chaincode.");
 				quadrantArray[startRow + 1][startCol + 1] = 2;
 				chaincode += 7;
 				startRow += 1;
 				startCol += 1;
 			} else {
-				System.out.println("Error: Unable to determine next pixel hop location. Stopping image detection and returning chain code.");
+				//System.out.println("Error: Unable to determine next pixel hop location. Stopping image detection and returning chain code.");
 				break;
 			}
 
-			System.out.println("Current Chaincode: " + chaincode + "\n");
+			//System.out.println("Current Chaincode: " + chaincode + "\n");
 
 			if (startRow == row && startCol == col) {
 				System.out.println("\n ------------------------------------------------------");
@@ -330,6 +351,7 @@ public class ReadPixel extends Component {
 		}
 
 		System.out.println(" Final Image Chaincode: " + chaincode);
+		chainList.add(chaincode);
 	}
 
 
