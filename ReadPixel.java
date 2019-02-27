@@ -5,6 +5,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.util.Arrays;
 import java.util.*;
+import java.sql.*;
 
 public class ReadPixel extends Component {
 
@@ -132,12 +133,17 @@ public class ReadPixel extends Component {
 
 		Iterator itr = chainList.iterator();  
 		int quadrant = 1;
+		String final_fcc = "";
+		String final_fcc2 = "";
 
-  		while(itr.hasNext()){  
-			   System.out.println("Quadrant " + quadrant + " Chain Code: " + itr.next());  
+  		while(itr.hasNext()){ 
+			   Object element = itr.next(); 
+			   final_fcc2 = element.toString();
+			   System.out.println("Quadrant " + quadrant + " Chain Code: " + final_fcc2);  
+			   final_fcc += final_fcc2;
 			   quadrant++;
-  		}  
-
+  		}
+		  System.out.println("Final Chain Code: " + final_fcc);  
 	}
 
 
@@ -179,7 +185,6 @@ public class ReadPixel extends Component {
 		// In our second pass, we go through each pixel and check to see if it was
 		// identified as a border pixel. If so, we'll re-convert it back to binary.
 		// Otherwise we'll set it to be a zero to make our life easier.
-
 		for (int i = 0; i < quadrantArray.length; i++) {
 			for (int j = 0; j < quadrantArray[0].length; j++) {
 				if (quadrantArray[i][j] != 2) {
@@ -190,6 +195,7 @@ public class ReadPixel extends Component {
 
 			} 
 		}
+
 
 //printArrays(quadrantArray);
 
@@ -285,6 +291,16 @@ public class ReadPixel extends Component {
 		int startRow = row;
 		int startCol = col;
 		String chaincode = "";
+		
+		//Direction move counters
+		int east = 0;
+		int n_east = 0;
+		int north = 0;
+		int n_west = 0;
+		int west = 0;
+		int s_west = 0;
+		int south = 0;
+		int s_east = 0;
 
 		quadrantArray = drawBorders(quadrantArray);
 
@@ -295,46 +311,54 @@ public class ReadPixel extends Component {
 				//System.out.println("Moving East. Adding [0] to Chaincode.");
 				quadrantArray[startRow][startCol + 1] = 2;
 				chaincode += 0;
-				startCol += 1; 
+				startCol += 1;
+				east += 1; 
 			} else if (isValid2(quadrantArray, startRow - 1, startCol + 1) && quadrantArray[startRow - 1][startCol + 1] == 1) {  // direction 1 - NORTH EAST
 				//System.out.println("Moving North East. Adding [1] to Chaincode.");
 				quadrantArray[startRow - 1][startCol + 1] = 2;
 				chaincode += 1;
 				startRow -= 1;
 				startCol += 1;
+				n_east += 1;
 			} else if (isValid2(quadrantArray, startRow - 1, startCol) && quadrantArray[startRow - 1][startCol] == 1) { 	   // direction 2 - NORTH
 				//System.out.println("Moving North. Adding [2] to Chaincode.");
 				quadrantArray[startRow - 1][startCol] = 2;
 				chaincode += 2;
 				startRow -= 1;
+				north += 1;
 			} else if (isValid2(quadrantArray, startRow - 1, startCol - 1) && quadrantArray[startRow - 1][startCol - 1] == 1) { // direction 3 - NORTH WEST
 				//System.out.println("Moving North West. Adding [3] to Chaincode.");
 				quadrantArray[startRow - 1][startCol - 1] = 2;
 				chaincode += 3;
 				startRow -= 1;
 				startCol -= 1;
+				n_west +=1;
 			} else if (isValid2(quadrantArray, startRow, startCol - 1) && quadrantArray[startRow][startCol - 1] == 1) { 	   // direction 4 - WEST
 				//System.out.println("Moving West. Adding [4] to Chaincode.");
 				quadrantArray[startRow][startCol - 1] = 2;
 				chaincode += 4;
 				startCol -= 1;
+				west +=1;
 			} else if (isValid2(quadrantArray, startRow + 1, startCol - 1) && quadrantArray[startRow + 1][startCol - 1] == 1) { // direction 5 - SOUTH WEST
 				//System.out.println("Moving South West. Adding [5] to Chaincode.");
 				quadrantArray[startRow + 1][startCol - 1] = 2;
 				chaincode += 5;
 				startRow += 1;
 				startCol -= 1;
+				s_west +=1;
 			} else if (isValid2(quadrantArray, startRow + 1, startCol) && quadrantArray[startRow + 1][startCol] == 1) { 	   // direction 6 - SOUTH
 				//System.out.println("Moving South. Adding [6] to Chaincode.");
 				quadrantArray[startRow + 1][startCol] = 2;
 				chaincode += 6;
 				startRow += 1;
+				south +=1;
 			} else if (isValid2(quadrantArray, startRow + 1, startCol + 1) && quadrantArray[startRow + 1][startCol + 1] == 1) { // direction 7 - SOUTH EAST
 				//System.out.println("Moving South East. Adding [7] to Chaincode.");
 				quadrantArray[startRow + 1][startCol + 1] = 2;
 				chaincode += 7;
 				startRow += 1;
 				startCol += 1;
+				s_east += 1;
 			} else {
 				//System.out.println("Error: Unable to determine next pixel hop location. Stopping image detection and returning chain code.");
 				break;
@@ -346,11 +370,25 @@ public class ReadPixel extends Component {
 				System.out.println("\n ------------------------------------------------------");
 				System.out.println(" Reached starting pixel. Breaking Chaincode generation.");
 				System.out.println(" ------------------------------------------------------");
+				
 				break;
 			}
 		}
 
+		//array for fcc counts converted to string for table insertion
+		int[] fcc_counts = new int[]{east, n_east, north, n_west, west, s_west, south, s_east};
+		String fcc_count = "";
+		
+		for(int i = 0; i < fcc_counts.length; i++){
+			fcc_count += fcc_counts[i];
+		}
+		
+
 		System.out.println(" Final Image Chaincode: " + chaincode);
+		System.out.println(" FCC Code Count - East: " + east + ", North East: " + n_east + ", North: " + north + 
+		", North West: " + n_west + ", West: " + west + ", South West: " + s_west + ", South: " + south + ", South East: "  + s_east);
+		System.out.println(" FCC Count String for table insertion: " + fcc_count);
+		System.out.println(" Perimeter count: " + chaincode.length());
 		chainList.add(chaincode);
 	}
 
