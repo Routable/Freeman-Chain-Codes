@@ -1,4 +1,5 @@
 import java.util.*;
+import java.sql.*;
 
 class QArray {
     private int[][] array;
@@ -55,4 +56,21 @@ class QArray {
         // return new QArray(quadrantArray);
         return quadrantArray;
     }
+    
+   /* public void db_insert(int section) {
+		//Connection to database for insertion
+
+		Connection con=null;
+		Statement stmt=null;
+		try{
+			Class.forName("oracle.jdbc.driver.OracleDriver");  
+			con=DriverManager.getConnection(  
+			"jdbc:oracle:thin:DM_USER13/password@10.1.144.85:1521:COSC436");  
+			stmt=con.createStatement();
+		}catch(Exception e){ System.out.println(e);}
+        // get key coordinates
+		try{
+			stmt.executeUpdate("INSERT INTO DIGIT_TEST (SEC1_FCC_CODE) " + "VALUES ()"); 
+		}catch(Exception e){ System.out.println(e);}
+    } */
 }

@@ -5,13 +5,13 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.util.Arrays;
 
-public class ReadPixel extends Component {
+public class ReadPixelOld extends Component {
 
 	public String[][] stringArray;
 	public int[][] binaryArray;
 
 	public static void main(String[] foo) {
-		new ReadPixel();
+		new ReadPixelOld();
 	}
 
 	private void marchThroughImage(BufferedImage image) {
@@ -217,7 +217,7 @@ public class ReadPixel extends Component {
 		return color;
 	}
 
-	public ReadPixel() {
+	public ReadPixelOld() {
 		try {
 			// get the BufferedImage, using the ImageIO class
 			BufferedImage image = ImageIO.read(this.getClass().getResource("in.png"));
