@@ -179,10 +179,12 @@ public class ReadPixel extends Component {
         // get key coordinates
 		try{
 			//stmt.executeUpdate("INSERT INTO DIGIT_TEST (CONCAT(SEC," +quadrant+", _FCC_CODE) " + "VALUES ("+final_fcc2+")" + "WHERE CLS_LBL = 2");
-			stmt.executeUpdate("INSERT INTO DIGIT_TEST (CLS_LBL, SEC1_FCC_CODE, SEC1_PERIMETER, SEC2_FCC_CODE, SEC2_PERIMETER, SEC3_FCC_CODE, SEC3_PERIMETER, "
-					+ "SEC4_FCC_CODE, SEC4_PERIMETER, SEC5_FCC_CODE, SEC5_PERIMETER, SEC6_FCC_CODE, SEC6_PERIMETER, SEC7_FCC_CODE, SEC7_PERIMETER, SEC8_FCC_CODE, SEC8_PERIMETER, SEC9_FCC_CODE, SEC9_PERIMETER) "
-					+ "" + "VALUES ( '5', "+q1code+", "+q1Pcount+" , "+q2code+", "+q2Pcount+",  "+q3code+", "+q3Pcount+", "+q4code+", "+q4Pcount+", "+q5code+", "+q5Pcount+", "+q6code+", "+q6Pcount+", "+q7code+", "+q7Pcount+","
-							+ " "+q8code+", "+q8Pcount+", "+q9code+", "+q9Pcount+")");  // + "WHERE CLS_LBL = 2");
+			stmt.executeUpdate("INSERT INTO DIGIT_TEST (CLS_LBL, SEC1_FCC_CODE, SEC1_PERIMETER, SEC1_FCC_CNT, SEC2_FCC_CODE, SEC2_PERIMETER, SEC2_FCC_CNT, SEC3_FCC_CODE, SEC3_PERIMETER, SEC3_FCC_CNT, "
+					+ "SEC4_FCC_CODE, SEC4_PERIMETER, SEC4_FCC_CNT, SEC5_FCC_CODE, SEC5_PERIMETER, SEC5_FCC_CNT, SEC6_FCC_CODE, SEC6_PERIMETER, SEC6_FCC_CNT, SEC7_FCC_CODE, SEC7_PERIMETER, SEC7_FCC_CNT, "
+					+ "SEC8_FCC_CODE, SEC8_PERIMETER, SEC8_FCC_CNT, SEC9_FCC_CODE, SEC9_PERIMETER, SEC9_FCC_CNT) "
+					+ "" + "VALUES ( '5', "+q1code+", "+q1Pcount+", "+q1Dcount+", "+q2code+", "+q2Pcount+", "+q2Dcount+", "+q3code+", "+q3Pcount+", "+q3Dcount+", "+q4code+", "+q4Pcount+", "+q4Dcount+", "
+							+ ""+q5code+", "+q5Pcount+", "+q5Dcount+", "+q6code+", "+q6Pcount+", "+q6Dcount+", "+q7code+", "+q7Pcount+", "+q7Dcount+","
+							+ " "+q8code+", "+q8Pcount+", "+q8Dcount+", "+q9code+", "+q9Pcount+", "+q9Dcount+")");  // + "WHERE CLS_LBL = 2");
 		}catch(Exception e){ System.out.println(e);}
 		
 		Iterator itr = chainList.iterator();			
