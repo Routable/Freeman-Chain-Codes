@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.*;
 import java.sql.*;
+import java.text.NumberFormat;
 
 public class ReadPixel extends Component {
 
@@ -131,16 +132,45 @@ public class ReadPixel extends Component {
 		System.out.println(" CALCULATIONS COMPLETED: SEE OUTPUT FOR DETAILS");
 		System.out.println("-----------------------------------------------");
 
+		
+		//Strings for DB insertion
+		String q1code = chainList.get(0);
+		String q2code = chainList.get(1);
+		String q3code = chainList.get(2);
+		String q4code = chainList.get(3);		
+		String q5code = chainList.get(4);		
+		String q6code = chainList.get(5);
+		String q7code = chainList.get(6);
+		String q8code = chainList.get(7);
+		String q9code = chainList.get(8);
+		
+		//Connection to database for insertion
+		Connection con=null;
+		Statement stmt=null;
+		try{
+			Class.forName("oracle.jdbc.driver.OracleDriver");  
+			con=DriverManager.getConnection(  
+			"jdbc:oracle:thin:DM_USER13/password@10.1.144.85:1521:COSC436");  
+			stmt=con.createStatement();
+		}catch(Exception e){ System.out.println(e);}
+        // get key coordinates
+		try{
+			//stmt.executeUpdate("INSERT INTO DIGIT_TEST (CONCAT(SEC," +quadrant+", _FCC_CODE) " + "VALUES ("+final_fcc2+")" + "WHERE CLS_LBL = 2");
+			stmt.executeUpdate("INSERT INTO DIGIT_TEST (CLS_LBL, SEC1_FCC_CODE, SEC2_FCC_CODE, SEC3_FCC_CODE, "
+					+ "SEC4_FCC_CODE, SEC5_FCC_CODE, SEC6_FCC_CODE, SEC7_FCC_CODE, SEC8_FCC_CODE, SEC9_FCC_CODE) "
+					+ "" + "VALUES ( '5', "+q1code+" , "+q2code+",  "+q3code+", "+q4code+", "+q5code+", "+q6code+" , "+q7code+", "+q8code+", "+q9code+")");  // + "WHERE CLS_LBL = 2");
+		}catch(Exception e){ System.out.println(e);}
+		
 		Iterator itr = chainList.iterator();  
 		int quadrant = 1;
 		String final_fcc = "";
-		String final_fcc2 = "";
+		String final_fcc2 = "";	
 
   		while(itr.hasNext()){ 
 			   Object element = itr.next(); 
 			   final_fcc2 = element.toString();
-			   System.out.println("Quadrant " + quadrant + " Chain Code: " + final_fcc2);  
-			   final_fcc += final_fcc2;
+			   System.out.println("Quadrant " + quadrant + " Chain Code: " + final_fcc2);
+				final_fcc += final_fcc2;
 			   quadrant++;
   		}
 		  System.out.println("Final Chain Code: " + final_fcc);  
@@ -378,18 +408,20 @@ public class ReadPixel extends Component {
 		//array for fcc counts converted to string for table insertion
 		int[] fcc_counts = new int[]{east, n_east, north, n_west, west, s_west, south, s_east};
 		String fcc_count = "";
-		
+
 		for(int i = 0; i < fcc_counts.length; i++){
 			fcc_count += fcc_counts[i];
-		}
-		
 
+		}
+		//Long chain = Long.parseLong(chaincode);
+		//String formattedCode = String.format("%020d", chain);
 		System.out.println(" Final Image Chaincode: " + chaincode);
 		System.out.println(" FCC Code Count - East: " + east + ", North East: " + n_east + ", North: " + north + 
 		", North West: " + n_west + ", West: " + west + ", South West: " + s_west + ", South: " + south + ", South East: "  + s_east);
 		System.out.println(" FCC Count String for table insertion: " + fcc_count);
 		System.out.println(" Perimeter count: " + chaincode.length());
 		chainList.add(chaincode);
+	
 	}
 
 
