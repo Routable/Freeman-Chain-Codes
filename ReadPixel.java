@@ -13,6 +13,8 @@ public class ReadPixel extends Component {
 	public String[][] stringArray;
 	public int[][] binaryArray;
 	public ArrayList<String> chainList = new ArrayList<String>();
+	public ArrayList<String> perimeterList = new ArrayList<String>();
+	public ArrayList<String> directionList = new ArrayList<String>();
 	int imageWidth;
 	int imageHeight;
 
@@ -144,6 +146,27 @@ public class ReadPixel extends Component {
 		String q8code = chainList.get(7);
 		String q9code = chainList.get(8);
 		
+		String q1Pcount = perimeterList.get(0);
+		String q2Pcount = perimeterList.get(1);
+		String q3Pcount = perimeterList.get(2);
+		String q4Pcount = perimeterList.get(3);
+		String q5Pcount = perimeterList.get(4);
+		String q6Pcount = perimeterList.get(5);
+		String q7Pcount = perimeterList.get(6);
+		String q8Pcount = perimeterList.get(7);
+		String q9Pcount = perimeterList.get(8);
+		
+		String q1Dcount = directionList.get(0);
+		String q2Dcount = directionList.get(1);
+		String q3Dcount = directionList.get(2);
+		String q4Dcount = directionList.get(3);
+		String q5Dcount = directionList.get(4);
+		String q6Dcount = directionList.get(5);
+		String q7Dcount = directionList.get(6);
+		String q8Dcount = directionList.get(7);
+		String q9Dcount = directionList.get(8);
+		
+		
 		//Connection to database for insertion
 		Connection con=null;
 		Statement stmt=null;
@@ -156,12 +179,15 @@ public class ReadPixel extends Component {
         // get key coordinates
 		try{
 			//stmt.executeUpdate("INSERT INTO DIGIT_TEST (CONCAT(SEC," +quadrant+", _FCC_CODE) " + "VALUES ("+final_fcc2+")" + "WHERE CLS_LBL = 2");
-			stmt.executeUpdate("INSERT INTO DIGIT_TEST (CLS_LBL, SEC1_FCC_CODE, SEC2_FCC_CODE, SEC3_FCC_CODE, "
-					+ "SEC4_FCC_CODE, SEC5_FCC_CODE, SEC6_FCC_CODE, SEC7_FCC_CODE, SEC8_FCC_CODE, SEC9_FCC_CODE) "
-					+ "" + "VALUES ( '5', "+q1code+" , "+q2code+",  "+q3code+", "+q4code+", "+q5code+", "+q6code+" , "+q7code+", "+q8code+", "+q9code+")");  // + "WHERE CLS_LBL = 2");
+			stmt.executeUpdate("INSERT INTO DIGIT_TEST (CLS_LBL, SEC1_FCC_CODE, SEC1_PERIMETER, SEC1_FCC_CNT, SEC2_FCC_CODE, SEC2_PERIMETER, SEC2_FCC_CNT, SEC3_FCC_CODE, SEC3_PERIMETER, SEC3_FCC_CNT, "
+					+ "SEC4_FCC_CODE, SEC4_PERIMETER, SEC4_FCC_CNT, SEC5_FCC_CODE, SEC5_PERIMETER, SEC5_FCC_CNT, SEC6_FCC_CODE, SEC6_PERIMETER, SEC6_FCC_CNT, SEC7_FCC_CODE, SEC7_PERIMETER, SEC7_FCC_CNT, "
+					+ "SEC8_FCC_CODE, SEC8_PERIMETER, SEC8_FCC_CNT, SEC9_FCC_CODE, SEC9_PERIMETER, SEC9_FCC_CNT) "
+					+ "" + "VALUES ( '5', "+q1code+", "+q1Pcount+", "+q1Dcount+", "+q2code+", "+q2Pcount+", "+q2Dcount+", "+q3code+", "+q3Pcount+", "+q3Dcount+", "+q4code+", "+q4Pcount+", "+q4Dcount+", "
+							+ ""+q5code+", "+q5Pcount+", "+q5Dcount+", "+q6code+", "+q6Pcount+", "+q6Dcount+", "+q7code+", "+q7Pcount+", "+q7Dcount+","
+							+ " "+q8code+", "+q8Pcount+", "+q8Dcount+", "+q9code+", "+q9Pcount+", "+q9Dcount+")");  // + "WHERE CLS_LBL = 2");
 		}catch(Exception e){ System.out.println(e);}
 		
-		Iterator itr = chainList.iterator();  
+		Iterator itr = chainList.iterator();			
 		int quadrant = 1;
 		String final_fcc = "";
 		String final_fcc2 = "";	
@@ -173,7 +199,10 @@ public class ReadPixel extends Component {
 				final_fcc += final_fcc2;
 			   quadrant++;
   		}
-		  System.out.println("Final Chain Code: " + final_fcc);  
+		  System.out.println("Final Chain Code: " + final_fcc); 
+		  System.out.println("q1 and q9 pcount: " + q1Pcount + ", " + q9Pcount);
+		  System.out.println("q1 and q9 dcount: " + q1Dcount + ", " + q9Dcount);
+		  
 	}
 
 
@@ -421,6 +450,10 @@ public class ReadPixel extends Component {
 		System.out.println(" FCC Count String for table insertion: " + fcc_count);
 		System.out.println(" Perimeter count: " + chaincode.length());
 		chainList.add(chaincode);
+		directionList.add(fcc_count);
+		int pLength = chaincode.length();
+		String pCount = Integer.toString(chaincode.length());
+		perimeterList.add(pCount);
 	
 	}
 
