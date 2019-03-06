@@ -18,35 +18,24 @@ public class ReadPixel extends Component {
 	int imageWidth;
 	int imageHeight;
 
-	public static void main(String[] foo) {
+	public static void main(String[] foo) throws IOException {
 
 		System.out.println(" \n ---------------------------------- ");
 		System.out.println(" 	   STARTING IMAGE DETECTION     ");
 		System.out.println(" ---------------------------------- ");
 
-		new ReadPixel();
+		ListFiles lf = new ListFiles();
+		lf.listFilesForFolder();
+
 	}
 
 
-	public ReadPixel() {
-		try {
-
-			// get the BufferedImage, using the ImageIO class
-			BufferedImage image = ImageIO.read(this.getClass().getResource("in.png"));
-			marchThroughImage(image);
-
-		} catch (IOException e) {
-			System.out.println(" ---------------------------------- ");
-			System.out.println("    PROBLEMS DETECTED - SEE BELOW   ");
-			System.out.println(" ---------------------------------- ");
-			System.err.println(e.getMessage());
-		}
+	public ReadPixel(BufferedImage image) {
+		// get the BufferedImage, using the ImageIO class
+		marchThroughImage(image);
 	}
+	
 
-
-	// Traverse through image to binarize image data. This method
-	// generates both a String array (for human visualization), 
-	// and a binary array for machine use. 
 
 	private void marchThroughImage(BufferedImage image) {
 
@@ -135,7 +124,7 @@ public class ReadPixel extends Component {
 		System.out.println("-----------------------------------------------");
 
 		
-		//Strings for DB insertion
+		//Getting Strings for DB insertion (FCC Code, Perimeter count, Direction Count)
 		String q1code = chainList.get(0);
 		String q2code = chainList.get(1);
 		String q3code = chainList.get(2);
@@ -177,15 +166,31 @@ public class ReadPixel extends Component {
 			stmt=con.createStatement();
 		}catch(Exception e){ System.out.println(e);}
         // get key coordinates
+		ResultSet rs = null;
+		ResultSet rs2 = null;
 		try{
 			//stmt.executeUpdate("INSERT INTO DIGIT_TEST (CONCAT(SEC," +quadrant+", _FCC_CODE) " + "VALUES ("+final_fcc2+")" + "WHERE CLS_LBL = 2");
-			stmt.executeUpdate("INSERT INTO DIGIT_TEST (CLS_LBL, SEC1_FCC_CODE, SEC1_PERIMETER, SEC1_FCC_CNT, SEC2_FCC_CODE, SEC2_PERIMETER, SEC2_FCC_CNT, SEC3_FCC_CODE, SEC3_PERIMETER, SEC3_FCC_CNT, "
+			stmt.executeUpdate("INSERT INTO DIGIT_TRAINING (CLS_LBL, SEC1_FCC_CODE, SEC1_PERIMETER, SEC1_FCC_CNT, SEC2_FCC_CODE, SEC2_PERIMETER, SEC2_FCC_CNT, SEC3_FCC_CODE, SEC3_PERIMETER, SEC3_FCC_CNT, "
 					+ "SEC4_FCC_CODE, SEC4_PERIMETER, SEC4_FCC_CNT, SEC5_FCC_CODE, SEC5_PERIMETER, SEC5_FCC_CNT, SEC6_FCC_CODE, SEC6_PERIMETER, SEC6_FCC_CNT, SEC7_FCC_CODE, SEC7_PERIMETER, SEC7_FCC_CNT, "
 					+ "SEC8_FCC_CODE, SEC8_PERIMETER, SEC8_FCC_CNT, SEC9_FCC_CODE, SEC9_PERIMETER, SEC9_FCC_CNT) "
 					+ "" + "VALUES ( '5', "+q1code+", "+q1Pcount+", "+q1Dcount+", "+q2code+", "+q2Pcount+", "+q2Dcount+", "+q3code+", "+q3Pcount+", "+q3Dcount+", "+q4code+", "+q4Pcount+", "+q4Dcount+", "
 							+ ""+q5code+", "+q5Pcount+", "+q5Dcount+", "+q6code+", "+q6Pcount+", "+q6Dcount+", "+q7code+", "+q7Pcount+", "+q7Dcount+","
 							+ " "+q8code+", "+q8Pcount+", "+q8Dcount+", "+q9code+", "+q9Pcount+", "+q9Dcount+")");  // + "WHERE CLS_LBL = 2");
-		}catch(Exception e){ System.out.println(e);}
+		    //stmt.close();
+			String query = "SELECT * FROM DIGIT_TRAINING ";
+			String query2 = "SELECT * FROM DIGIT_TEST";
+			rs = stmt.executeQuery(query);
+			//rs2 = stmt.executeQuery(query2);
+			
+			while(rs.next())
+		      {
+		        String fcc1 = rs.getString("SEC1_FCC_CODE");
+		        int cls_lbl = rs.getInt("CLS_LBL");
+		        // print the results
+		        System.out.println("FCC: " + fcc1 + " Class label: " + cls_lbl);
+		      }
+		}catch(Exception e){ System.out.println(e);}	
+		
 		
 		Iterator itr = chainList.iterator();			
 		int quadrant = 1;
