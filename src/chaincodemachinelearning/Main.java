@@ -21,6 +21,10 @@ public class Main {
 		ListFiles eight = new ListFiles(eightFolder);
 		eight.listFilesForFolder();
 		
+		//Calling Classifier
+		Classifier classifier = new Classifier();
+		
+		
 	
 	}
 }
