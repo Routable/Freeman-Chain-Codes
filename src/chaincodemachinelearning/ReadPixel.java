@@ -27,7 +27,6 @@ public class ReadPixel extends Component {
 	}
 
 
-
 	private void marchThroughImage(BufferedImage image) {
 
 		imageWidth = image.getWidth();  //image width
@@ -64,8 +63,6 @@ public class ReadPixel extends Component {
 		int[][] Q8 = qArray.getQuadrant(8);
 		int[][] Q9 = qArray.getQuadrant(9);
 
-
-
 		indexOfFirstOne(Q1);
 		indexOfFirstOne(Q2);
 		indexOfFirstOne(Q3);
@@ -75,8 +72,6 @@ public class ReadPixel extends Component {
 		indexOfFirstOne(Q7);
 		indexOfFirstOne(Q8);
 		indexOfFirstOne(Q9);
-
-
 
 		//Getting Strings for DB insertion (FCC Code, Perimeter count, Direction Count)
 		String q1code = chainList.get(0);
@@ -113,16 +108,20 @@ public class ReadPixel extends Component {
 		//Connection to database for insertion
 		Connection con=null;
 		Statement stmt=null;
-		try{
+		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");  
 			con=DriverManager.getConnection(  
 					"jdbc:oracle:thin:DM_USER13/password@10.1.144.85:1521:COSC436");  
 			stmt=con.createStatement();
-		}catch(Exception e){ System.out.println(e);}
+			
+		}catch(Exception e) { 
+			System.out.println(e);
+		}
 		// get key coordinates
 		ResultSet rs = null;
 		ResultSet rs2 = null;
-		try{
+		
+		try {
 			//stmt.executeUpdate("INSERT INTO DIGIT_TEST (CONCAT(SEC," +quadrant+", _FCC_CODE) " + "VALUES ("+final_fcc2+")" + "WHERE CLS_LBL = 2");
 			stmt.executeUpdate("INSERT INTO DIGIT_TRAINING (CLS_LBL, SEC1_FCC_CODE, SEC1_PERIMETER, SEC1_FCC_CNT, SEC2_FCC_CODE, SEC2_PERIMETER, SEC2_FCC_CNT, SEC3_FCC_CODE, SEC3_PERIMETER, SEC3_FCC_CNT, "
 					+ "SEC4_FCC_CODE, SEC4_PERIMETER, SEC4_FCC_CNT, SEC5_FCC_CODE, SEC5_PERIMETER, SEC5_FCC_CNT, SEC6_FCC_CODE, SEC6_PERIMETER, SEC6_FCC_CNT, SEC7_FCC_CODE, SEC7_PERIMETER, SEC7_FCC_CNT, "
@@ -158,6 +157,7 @@ public class ReadPixel extends Component {
 			final_fcc += final_fcc2;
 			quadrant++;
 		}
+		
 		//System.out.println("Final Chain Code: " + final_fcc); 
 		//System.out.println("q1 and q9 pcount: " + q1Pcount + ", " + q9Pcount);
 		//System.out.println("q1 and q9 dcount: " + q1Dcount + ", " + q9Dcount);
