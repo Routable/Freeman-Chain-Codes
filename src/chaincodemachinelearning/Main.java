@@ -23,8 +23,5 @@ public class Main {
 		
 		//Calling Classifier
 		Classifier classifier = new Classifier();
-		
-		
-	
 	}
 }
